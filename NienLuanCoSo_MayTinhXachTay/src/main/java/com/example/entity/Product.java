@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "products")
 public class Product {
 
     @Id
@@ -17,8 +17,9 @@ public class Product {
 
     private String productName;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private Double price;
+
+    private Integer stock;
 
     private String cpu;
 
@@ -28,13 +29,10 @@ public class Product {
 
     private String gpu;
 
-    private String screenSize;
-
-    private Double price;
-
-    private Integer stock;
-
     private String image;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
