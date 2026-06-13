@@ -13,4 +13,9 @@ public interface ProductService {
     Product save(Product product);
 
     void delete(Long id);
+    List<Product> search(String keyword);
+
+    List<Product> findByCategory(Long categoryId);
+
+    List<Product> findByBrand(Long brandId);
 }

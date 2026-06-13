@@ -35,4 +35,18 @@ public class ProductServiceImpl
     public void delete(Long id) {
     	productRepository.deleteById(id);
     }
+    @Override
+    public List<Product> search(String keyword) {
+        return productRepository.findByProductNameContaining(keyword);
+    }
+
+    @Override
+    public List<Product> findByCategory(Long categoryId) {
+        return productRepository.findByCategoryCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Product> findByBrand(Long brandId) {
+        return productRepository.findByBrandBrandId(brandId);
+    }
 }

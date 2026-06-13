@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.servece.ProductService;
@@ -49,5 +50,23 @@ public class ProductController {
             @PathVariable Long id) {
 
         productService.delete(id);
+    }
+    @GetMapping("/search")
+    public List<Product> search(
+            @RequestParam String keyword) {
+
+        return productService.search(keyword);
+    }
+    @GetMapping("/category/{id}")
+    public List<Product> findByCategory(
+            @PathVariable Long id) {
+
+        return productService.findByCategory(id);
+    }
+    @GetMapping("/brand/{id}")
+    public List<Product> findByBrand(
+            @PathVariable Long id) {
+
+        return productService.findByBrand(id);
     }
 }
