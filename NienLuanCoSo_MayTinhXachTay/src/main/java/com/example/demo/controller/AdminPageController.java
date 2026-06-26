@@ -65,9 +65,4 @@ public class AdminPageController {
         return "admin/users"; // Trả về file users.html
     }
 
-    @GetMapping("/products")
-    public String products(Model model) {
-        model.addAttribute("activePage", "products");
-        return "admin/products"; // Trả về file products.html
-    }
 }

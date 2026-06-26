@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth" xmlns:th="http://www.thymeleaf.org">
+<<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Sản phẩm - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = { 
+      darkMode: 'class', 
+      theme: { extend: { colors: { primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 500: '#6366f1', 600: '#4f46e5' } } } } 
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
+  <div th:replace="~{fragments/sidebar :: sidebar('products')}"></div>
+
+  <div class="lg:ml-64 min-h-screen transition-all duration-300">
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="p-4 sm:p-6 lg:p-8">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Quản lý Sản phẩm</h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border h-fit">
+          <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white" 
+              th:text="${newProduct.productId != null} ? 'Cập Nhật Sản Phẩm' : 'Thêm Sản Phẩm'">Thêm Sản Phẩm</h3>
+          
+          <form th:action="@{/admin/products/save}" th:object="${newProduct}" method="POST" class="space-y-4">
+            <input type="hidden" th:field="*{productId}">
+            
+            <div>
+              <label class="block text-sm font-medium mb-1">Tên sản phẩm</label>
+              <input type="text" th:field="*{productName}" required class="w-full border rounded-xl px-4 py-2 bg-gray-50 dark:bg-gray-700">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-sm font-medium mb-1">Hãng</label>
+                <select th:field="*{brand.brandId}" class="w-full border rounded-xl px-4 py-2 bg-gray-50 dark:bg-gray-700">
+                  <option th:each="b : ${brands}" th:value="${b.brandId}" th:text="${b.brandName}"></option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Danh mục</label>
+                <select th:field="*{category.categoryId}" class="w-full border rounded-xl px-4 py-2 bg-gray-50 dark:bg-gray-700">
+                  <option th:each="c : ${categories}" th:value="${c.categoryId}" th:text="${c.categoryName}"></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-sm font-medium mb-1">Giá</label>
+                <input type="number" th:field="*{price}" class="w-full border rounded-xl px-4 py-2 bg-gray-50 dark:bg-gray-700">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Tồn kho</label>
+                <input type="number" th:field="*{stock}" class="w-full border rounded-xl px-4 py-2 bg-gray-50 dark:bg-gray-700">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" th:field="*{cpu}" placeholder="CPU" class="border rounded-xl px-4 py-2 bg-gray-50">
+              <input type="text" th:field="*{ram}" placeholder="RAM" class="border rounded-xl px-4 py-2 bg-gray-50">
+            </div>
+
+            <button type="submit" class="w-full bg-primary-500 text-white rounded-xl py-2 font-semibold hover:bg-primary-600">Lưu Sản Phẩm</button>
+          </form>
+        </div>
+
+        <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+              <tr>
+                <th class="px-6 py-3">Sản phẩm</th>
+                <th class="px-6 py-3">Giá</th>
+                <th class="px-6 py-3 text-right">Hành động</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y">
+              <tr th:each="p : ${products}">
+                <td class="px-6 py-4">
+                  <p class="font-semibold" th:text="${p.productName}"></p>
+                  <p class="text-xs text-gray-400" th:text="${p.brand.brandName}"></p>
+                </td>
+                <td class="px-6 py-4" th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+                <td class="px-6 py-4 flex justify-end gap-2">
+                  <a th:href="@{/admin/products/edit/{id}(id=${p.productId})}"
+                  class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 transition-colors" title="Chỉnh sửa">
+                  <i data-lucide="edit" class="w-4 h-4"></i>
+                  </a>
+                  <a th:href="@{/admin/products/delete/{id}(id=${p.productId})}" 
+                  class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 transition-colors">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

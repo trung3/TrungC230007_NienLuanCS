@@ -32,14 +32,21 @@
         <i data-lucide="tag" class="w-5 h-5"></i>
         <span>Thương hiệu</span>
       </a>
+
       <a th:href="@{/admin/categories}" 
          class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
          th:classappend="${activePage == 'categories' ? 'active text-white bg-primary-500 shadow-lg shadow-primary-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}">
-        <i data-lucide="tag" class="w-5 h-5"></i>
+        <i data-lucide="folder-tree" class="w-5 h-5"></i>
         <span>Danh mục</span>
       </a>
-     
-      </nav>
+
+     <a th:href="@{/admin/products}" 
+   class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
+   th:classappend="${activePage == 'products' ? 'active text-white bg-primary-500 shadow-lg shadow-primary-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}">
+  <i data-lucide="package" class="w-5 h-5"></i>
+  <span>Sản phẩm</span>
+</a>
+    </nav>
   </aside>
 </div>
 </html>

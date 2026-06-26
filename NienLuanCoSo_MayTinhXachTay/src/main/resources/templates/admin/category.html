@@ -75,7 +75,7 @@
                   <td class="px-6 py-4 text-sm font-semibold text-gray-800 dark:text-white" th:text="${c.categoryName}">Laptop Gaming</td>
                   <td class="px-6 py-4 flex justify-end gap-2">
                     <a th:href="@{/admin/categories/edit/{id}(id=${c.categoryId})}" 
-                       class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 transition-colors">
+                       class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 transition-colors" title="Chỉnh sửa">
                       <i data-lucide="edit" class="w-4 h-4"></i>
                     </a>
                     <a th:href="@{/admin/categories/delete/{id}(id=${c.categoryId})}" 
