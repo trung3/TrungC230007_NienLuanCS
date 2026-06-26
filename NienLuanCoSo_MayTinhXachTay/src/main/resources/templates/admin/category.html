@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Danh mục - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = { 
+      darkMode: 'class', 
+      theme: { extend: { colors: { primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 500: '#6366f1', 600: '#4f46e5' } } } } 
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
+  <div th:replace="~{fragments/sidebar :: sidebar('categories')}"></div>
+
+  <div class="lg:ml-64 min-h-screen transition-all duration-300">
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="p-4 sm:p-6 lg:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">Danh mục sản phẩm</h2>
+          <p class="text-gray-500 dark:text-gray-400 mt-1">Quản lý các nhóm sản phẩm (Laptop Gaming, Văn phòng...)</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 h-fit">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4" 
+              th:text="${newcategory.categoryId != null} ? 'Cập Nhật Danh Mục' : 'Thêm Danh Mục Mới'">Thêm Danh Mục</h3>
+          
+          <form th:action="@{/admin/categories/save}" th:object="${newcategory}" method="POST" class="space-y-4">
+            <input type="hidden" th:field="*{categoryId}"> 
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tên danh mục</label>
+              <input type="text" th:field="*{categoryName}" required placeholder="Ví dụ: Laptop Gaming, Ultrabook..." 
+                     class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-2.5 text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all">
+            </div>
+            
+            <div class="flex gap-2">
+              <button type="submit" class="flex-1 bg-primary-500 hover:bg-primary-600 text-white rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors flex items-center justify-center gap-2">
+                <i data-lucide="save" class="w-4 h-4"></i> Lưu Lại
+              </button>
+              <a th:if="${newcategory.categoryId != null}" th:href="@{/admin/categorys}" 
+                 class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-600 dark:text-gray-300 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors flex items-center justify-center">
+                Hủy
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <div class="xl:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Danh sách danh mục</h3>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider border-b dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+                  <th class="px-6 py-4">ID</th>
+                  <th class="px-6 py-4">Tên danh mục</th>
+                  <th class="px-6 py-4 text-right">Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="c : ${categorys}" class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                  <td class="px-6 py-4 text-sm font-medium text-gray-500 dark:text-gray-400" th:text="${'#CAT-' + c.categoryId}">#CAT-1</td>
+                  <td class="px-6 py-4 text-sm font-semibold text-gray-800 dark:text-white" th:text="${c.categoryName}">Laptop Gaming</td>
+                  <td class="px-6 py-4 flex justify-end gap-2">
+                    <a th:href="@{/admin/categories/edit/{id}(id=${c.categoryId})}" 
+                       class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 transition-colors">
+                      <i data-lucide="edit" class="w-4 h-4"></i>
+                    </a>
+                    <a th:href="@{/admin/categories/delete/{id}(id=${c.categoryId})}" 
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');" 
+                       class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 transition-colors">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </a>
+                  </td>
+                </tr>
+               
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

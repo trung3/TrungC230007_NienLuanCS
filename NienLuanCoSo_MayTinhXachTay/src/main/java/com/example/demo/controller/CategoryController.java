@@ -1,50 +1,48 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.servece.CategoryService;
 import com.example.entity.Category;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("/api/categories")
+@Controller
+@RequestMapping("/admin/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
+    // 1. Hiển thị danh sách
     @GetMapping
-    public List<Category> getAll() {
-        return categoryService.findAll();
+    public String list(Model model) {
+        model.addAttribute("categorys", categoryService.findAll()); // Khớp với th:each="c : ${categorys}"
+        model.addAttribute("newcategory", new Category());         // Khớp với th:object="${newcategory}"
+        return "admin/category";
     }
 
-    @PostMapping
-    public Category create(
-            @RequestBody Category category) {
-        return categoryService.save(category);
+    // 2. Lưu (Thêm mới và Sửa)
+    @PostMapping("/save")
+    public String save(@ModelAttribute("newcategory") Category category) {
+        categoryService.save(category);
+        return "redirect:/admin/categories"; // Redirect về đúng đường dẫn @RequestMapping
     }
 
-    @PutMapping("/{id}")
-    public Category update(
-            @PathVariable Long id,
-            @RequestBody Category category) {
-
-        category.setCategoryId(id);
-        return categoryService.save(category);
+    // 3. Edit (Lấy dữ liệu đổ lên form)
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("categorys", categoryService.findAll());
+        model.addAttribute("newcategory", categoryService.findById(id)); // Đổ vào biến newcategory
+        return "admin/category";
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    // 4. Xóa
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
         categoryService.delete(id);
+        return "redirect:/admin/categories";
     }
 }

@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,4 +18,6 @@ public class Brand {
     private Long brandId;
 
     private String brandName;
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
+    private List<Product> products;
 }

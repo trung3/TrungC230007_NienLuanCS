@@ -2,6 +2,7 @@ package com.example.demo.servece;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Brand;
@@ -14,7 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class BrandServiceImpl
         implements BrandService {
 
-    private final BrandRepository brandRepository;
+	@Autowired
+	private final BrandRepository brandRepository;
 
     @Override
     public List<Brand> findAll() {
