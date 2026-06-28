@@ -1,0 +1,197 @@
+
+        body {
+            background: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        /* NAV */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+
+        .navbar-brand span {
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .cart-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+        }
+
+        /* HERO */
+        .hero-section {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+        }
+
+        .hero-icon {
+            font-size: 80px;
+            line-height: 1;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #adb5bd;
+        }
+
+        /* CARD */
+        .product-card {
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img-wrap {
+            background: #f8f9fa;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-emoji {
+            transition: transform 0.35s ease;
+            display: inline-block;
+        }
+
+        .product-card:hover .card-emoji {
+            transform: scale(1.1);
+        }
+
+        .spec-badge {
+            font-size: 10px;
+            background: #f1f3f5;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 2px 7px;
+            color: #6c757d;
+        }
+
+        .brand-label {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #adb5bd;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .price-main {
+            font-size: 15px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .price-old {
+            font-size: 11px;
+            text-decoration: line-through;
+            color: #adb5bd;
+        }
+
+        .add-btn {
+            font-size: 12px;
+            border-radius: 6px;
+            padding: 5px 14px;
+            white-space: nowrap;
+        }
+
+        /* FILTER */
+        .filter-pill {
+            font-size: 12px;
+            border-radius: 20px;
+            padding: 5px 16px;
+            border: 1px solid #dee2e6;
+            color: #6c757d;
+            background: none;
+            transition: all 0.15s;
+        }
+
+        .filter-pill.active,
+        .filter-pill:hover {
+            background: #212529;
+            color: #fff;
+            border-color: #212529;
+        }
+
+        /* SEARCH */
+        .search-input {
+            font-size: 13px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            padding: 6px 12px 6px 34px;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            box-shadow: none;
+            border-color: #212529;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-size: 14px;
+        }
+
+        /* TOAST */
+        .toast-container {
+            z-index: 1100;
+        }
+
+        /* OFFCANVAS */
+        .cart-item-emoji {
+            font-size: 28px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #dee2e6;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .qty-btn:hover {
+            background: #f8f9fa;
+        }
