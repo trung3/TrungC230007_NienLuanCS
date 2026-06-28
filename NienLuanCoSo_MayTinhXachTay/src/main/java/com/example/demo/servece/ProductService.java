@@ -18,4 +18,5 @@ public interface ProductService {
     List<Product> findByCategory(Long categoryId);
 
     List<Product> findByBrand(Long brandId);
+    void updateThumbnail(Long productId, String fileName);
 }

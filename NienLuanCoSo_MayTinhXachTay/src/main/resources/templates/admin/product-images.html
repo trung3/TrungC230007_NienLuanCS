@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Ảnh Sản phẩm - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = { 
+      darkMode: 'class', 
+      theme: { extend: { colors: { primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 500: '#6366f1', 600: '#4f46e5' } } } } 
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+  <div th:replace="~{fragments/sidebar :: sidebar('products')}"></div>
+
+  <div class="lg:ml-64 p-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white" th:text="'Ảnh: ' + ${product.productName}"></h2>
+          <p class="text-gray-500">Quản lý hình ảnh chi tiết cho sản phẩm</p>
+        </div>
+        <a th:href="@{/admin/products}" class="flex items-center gap-2 text-gray-600 hover:text-primary-500">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Quay lại
+        </a>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border mb-8">
+        <h3 class="text-lg font-semibold mb-6">Thư viện hiện tại</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div th:each="img : ${product.images}" class="relative ...">
+    <img th:src="@{'/images/' + ${img.imageUrl}}" class="w-full h-40 object-cover">
+    
+    <div class="absolute bottom-0 w-full bg-black/50 p-2 flex justify-between">
+        <a th:href="@{/admin/products/images/set-thumbnail/{productId}/{imageId}(productId=${product.productId}, imageId=${img.imageId})}"
+           class="text-white text-xs hover:text-yellow-400">
+           Đặt làm đại diện
+        </a>
+        <a th:href="@{/admin/products/images/delete/{id}(id=${img.imageId}, productId=${product.productId})}"
+           class="text-white text-xs hover:text-red-400">Xóa</a>
+    </div>
+</div>
+          <div th:if="${#lists.isEmpty(product.images)}" class="col-span-full py-10 text-center text-gray-400">
+            Chưa có ảnh nào. Hãy thêm ảnh bên dưới!
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border">
+        <h3 class="text-lg font-semibold mb-4">Thêm ảnh mới</h3>
+        <form th:action="@{/admin/products/images/add/{id}(id=${product.productId})}" 
+              method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+          <input type="file" name="imageFiles" multiple 
+                 class="w-full border-2 border-dashed rounded-xl p-6 text-center hover:bg-gray-50 cursor-pointer">
+          <button type="submit" class="bg-primary-500 text-white py-2.5 rounded-xl font-semibold hover:bg-primary-600">
+            Tải ảnh lên
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -49,4 +49,16 @@ public class ProductServiceImpl
     public List<Product> findByBrand(Long brandId) {
         return productRepository.findByBrandBrandId(brandId);
     }
+    @Override
+    public void updateThumbnail(Long productId, String fileName) {
+        // Tìm sản phẩm bằng ID
+        Product product = productRepository.findById(productId)
+                            .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+        
+        // Cập nhật tên file vào cột image
+        product.setImage(fileName); 
+        
+        // Lưu lại vào database
+        productRepository.save(product); 
+    }
 }
