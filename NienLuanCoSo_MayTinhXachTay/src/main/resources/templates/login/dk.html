@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            padding:20px;
+        }
+
+        .register-container{
+            width:400px;
+            background:#fff;
+            padding:40px;
+            border-radius:15px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .register-container h2{
+            text-align:center;
+            margin-bottom:30px;
+            color:#333;
+        }
+
+        .input-group{
+            margin-bottom:20px;
+        }
+
+        .input-group label{
+            display:block;
+            margin-bottom:8px;
+            color:#555;
+        }
+
+        .input-group input{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            outline:none;
+            font-size:16px;
+        }
+
+        .input-group input:focus{
+            border-color:#6c63ff;
+        }
+
+        .btn-register{
+            width:100%;
+            padding:12px;
+            background:#6c63ff;
+            color:#fff;
+            border:none;
+            border-radius:8px;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn-register:hover{
+            background:#574bdb;
+        }
+
+        .extra{
+            text-align:center;
+            margin-top:20px;
+        }
+
+        .extra a{
+            text-decoration:none;
+            color:#6c63ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Đăng Ký</h2>
+
+    <form th:action="@{/register}" method="post">
+
+        <div class="input-group">
+            <label>Họ và tên</label>
+            <input type="text"
+                   name="fullName"
+                   placeholder="Nhập họ và tên"
+                   required>
+        </div>
+
+        <div class="input-group">
+            <label>Tên đăng nhập</label>
+            <input type="text"
+                   name="username"
+                   placeholder="Nhập tên đăng nhập"
+                   required>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email"
+                   name="email"
+                   placeholder="Nhập email"
+                   required>
+        </div>
+
+        <div class="input-group">
+            <label>Số điện thoại</label>
+            <input type="text"
+                   name="phone"
+                   placeholder="Nhập số điện thoại">
+        </div>
+
+        <div class="input-group">
+            <label>Địa chỉ</label>
+            <input type="text"
+                   name="address"
+                   placeholder="Nhập địa chỉ">
+        </div>
+
+        <div class="input-group">
+            <label>Mật khẩu</label>
+            <input type="password"
+                   name="password"
+                   placeholder="Nhập mật khẩu"
+                   required>
+        </div>
+
+        <div class="input-group">
+            <label>Xác nhận mật khẩu</label>
+            <input type="password"
+                   name="confirmPassword"
+                   placeholder="Nhập lại mật khẩu"
+                   required>
+        </div>
+
+        <button type="submit" class="btn-register">
+            Đăng Ký
+        </button>
+
+        <div class="extra">
+            <p>Đã có tài khoản?
+                <a th:href="@{/login}">
+                    Đăng nhập
+                </a>
+            </p>
+        </div>
+
+        <div class="alert alert-danger mt-3"
+             th:if="${error}"
+             th:text="${error}">
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

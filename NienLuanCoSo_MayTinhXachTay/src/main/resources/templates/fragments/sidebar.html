@@ -47,6 +47,20 @@
   <span>Sản phẩm</span>
 </a>
     </nav>
+    <div class="d-flex align-items-center gap-3 ms-3">
+
+    <span class="fw-semibold">
+        Xin chào,
+        <span th:text="${#authentication.name}"></span>
+    </span>
+
+    <form th:action="@{/logout}" method="post" class="m-0">
+        <button type="submit" class="btn btn-outline-danger btn-sm">
+            Đăng xuất
+        </button>
+    </form>
+
+</div>
   </aside>
 </div>
 </html>
