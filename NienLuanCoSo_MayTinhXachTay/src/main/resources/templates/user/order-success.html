@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: main-layout(
+          'TechHub — Đặt hàng thành công',
+          ~{::#main-content}
+      )}">
+
+<body>
+<div id="main-content" class="container py-5">
+
+    <div class="mx-auto text-center border rounded-4 p-5"
+         style="max-width:650px">
+
+        <div class="text-success mb-3"
+             style="font-size:70px">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+        <h2 class="fw-semibold">
+            Đặt hàng thành công
+        </h2>
+
+        <p class="text-secondary">
+            TechHub đã nhận được đơn hàng của bạn.
+        </p>
+
+        <div class="bg-light rounded-3 p-3 my-4 text-start">
+
+            <div class="d-flex justify-content-between mb-2">
+                <span>Mã đơn hàng</span>
+                <strong th:text="${'#' + order.orderId}"></strong>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <span>Người nhận</span>
+                <strong th:text="${order.user.fullName}"></strong>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <span>Trạng thái</span>
+                <strong class="text-warning">
+                    Chờ xác nhận
+                </strong>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <span>Tổng tiền</span>
+
+                <strong class="text-danger"
+                        th:text="${#numbers.formatDecimal(
+                            order.totalAmount,
+                            0, 'POINT', 0, 'COMMA'
+                        ) + ' đ'}">
+                </strong>
+            </div>
+        </div>
+
+        <a th:href="@{/index}"
+           class="btn btn-dark px-4">
+            Tiếp tục mua hàng
+        </a>
+    </div>
+</div>
+</body>
+</html>

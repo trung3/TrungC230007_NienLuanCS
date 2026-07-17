@@ -149,9 +149,10 @@
                     </span>
                 </div>
 
-                <button class="btn btn-dark w-100 mb-2">
-                    Tiến hành đặt hàng
-                </button>
+               <a th:href="@{/checkout}"
+   class="btn btn-dark w-100 mb-2">
+    Tiến hành đặt hàng
+</a>
 
                 <form th:action="@{/cart/clear}" method="post">
                     <button class="btn btn-outline-danger w-100">
