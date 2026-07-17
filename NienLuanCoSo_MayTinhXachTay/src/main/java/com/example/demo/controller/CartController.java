@@ -61,7 +61,7 @@ public class CartController {
                     product.getImage(),
                     1
             );
-
+//fg
             cart.put(productId, item);
         } else {
             item.setQuantity(item.getQuantity() + 1);
