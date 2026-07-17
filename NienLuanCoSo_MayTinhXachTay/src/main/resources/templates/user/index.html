@@ -43,11 +43,22 @@
             <div class="col-md-3" th:each="p : ${products}">
                 <div class="card h-100 product-card">
                     <div class="card-img-wrap">
-                        <img th:src="@{'/images/' + ${p.image}}" class="card-img-top" th:alt="${p.productName}">
+                        <div class="card-img-wrap">
+    <a th:href="@{/product/{id}(id=${p.productId})}">
+        <img th:src="@{'/images/' + ${p.image}}"
+             class="card-img-top"
+             th:alt="${p.productName}">
+    </a>
+</div>
                     </div>
                     <div class="card-body p-3">
                         <p class="brand-label mb-1" th:text="${p.brand != null ? p.brand.brandName : 'Không thương hiệu'}"></p>
-                        <p class="card-title mb-2" th:text="${p.productName}"></p>
+                        <p class="card-title mb-2">
+    <a th:href="@{/product/{id}(id=${p.productId})}"
+       class="text-decoration-none text-dark"
+       th:text="${p.productName}">
+    </a>
+</p>
                         <div class="d-flex align-items-center justify-content-between mt-auto">
                             <div>
                                 <span class="price-main" th:text="${#numbers.formatDecimal(p.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></span>
