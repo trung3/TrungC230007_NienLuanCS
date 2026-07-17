@@ -1,27 +1,26 @@
 package com.example.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "cart_items")
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class CartItem {
+public class CartItem implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartItemId;
+    private static final long serialVersionUID = 1L;
 
-    private Integer quantity;
+    private Long productId;
+    private String productName;
+    private Double price;
+    private String image;
+    private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    
+    public double getSubtotal() {
+        return price * quantity;
+    }
 }

@@ -52,14 +52,78 @@
                             <div>
                                 <span class="price-main" th:text="${#numbers.formatDecimal(p.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></span>
                             </div>
-                            <button class="btn btn-outline-dark add-btn" th:onclick="'addCart(' + ${p.productId} + ', this)'">
-                                <i class="bi bi-plus"></i> Thêm
-                            </button>
+                            <form th:action="@{/cart/add/{id}(id=${p.productId})}"
+      method="post"
+      class="m-0">
+
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}">
+
+    <button type="submit"
+            class="btn btn-outline-dark add-btn">
+        <i class="bi bi-plus"></i> Thêm
+    </button>
+</form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div> </body>
+    </div> <script th:inline="javascript">
+    async function addCart(productId, button) {
+        const oldContent = button.innerHTML;
+
+        try {
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+            const headers = {};
+
+            // Dùng khi dự án có Spring Security
+            const csrfToken =
+                document.querySelector('meta[name="_csrf"]')?.content;
+            const csrfHeader =
+                document.querySelector('meta[name="_csrf_header"]')?.content;
+
+            if (csrfToken && csrfHeader) {
+                headers[csrfHeader] = csrfToken;
+            }
+
+            const response = await fetch('/cart/add/' + productId, {
+                method: 'POST',
+                headers: headers
+            });
+
+            if (!response.ok) {
+                throw new Error('Không thể thêm sản phẩm');
+            }
+
+            const data = await response.json();
+
+            const cartCount = document.getElementById('cart-count');
+
+            if (cartCount) {
+                cartCount.textContent = data.cartCount;
+            }
+
+            button.innerHTML = '<i class="bi bi-check-lg"></i> Đã thêm';
+            button.classList.remove('btn-outline-dark');
+            button.classList.add('btn-success');
+
+            setTimeout(() => {
+                button.innerHTML = oldContent;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-outline-dark');
+                button.disabled = false;
+            }, 1000);
+
+        } catch (error) {
+            alert(error.message);
+            button.innerHTML = oldContent;
+            button.disabled = false;
+        }
+    }
+</script></body>
 </html>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.servece.ProductService;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/index")
 public class userController {
 	@Autowired
     private ProductService productService;
