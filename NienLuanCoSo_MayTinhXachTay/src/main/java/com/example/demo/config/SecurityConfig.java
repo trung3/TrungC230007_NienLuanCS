@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers("/login","/dk",
+                .requestMatchers("/login","/dk","/register",
                                  "/css/**",
                                  "/js/**",
                                  "/images/**")
@@ -51,7 +51,7 @@ public class SecurityConfig {
                     if (isAdmin) {
                         response.sendRedirect("/admin/dashboard");
                     } else {
-                        response.sendRedirect("/user");
+                        response.sendRedirect("/index");
                     }
                 })
                 .failureUrl("/login?error")

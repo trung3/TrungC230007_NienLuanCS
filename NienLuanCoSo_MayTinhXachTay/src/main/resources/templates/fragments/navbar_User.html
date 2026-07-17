@@ -12,15 +12,16 @@
                     <li class="nav-item"><a class="nav-link text-secondary" href="#">Bảo hành</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#">Liên hệ</a></li>
                 </ul>
-                <a th:href="@{/cart}"
-   class="btn btn-outline-dark position-relative">
+                 <a th:href="@{/orders}"
+                   class="btn btn-outline-secondary">
 
-    <i class="bi bi-cart3"></i>
-    Giỏ hàng
-
-    <span id="cart-count"
-          class="position-absolute top-0 start-100
-                 translate-middle badge rounded-pill bg-danger"
+                    <i class="bi bi-box-seam"></i>
+                    Đơn hàng
+                </a>
+                <a th:href="@{/cart}"class="btn btn-outline-dark position-relative">
+ 					<i class="bi bi-cart3"></i>Giỏ hàng
+					<span id="cart-count"class="position-absolute top-0 start-100 
+					translate-middle badge rounded-pill bg-danger"
           th:text="${cartCount != null ? cartCount : 0}">
         0
     </span>

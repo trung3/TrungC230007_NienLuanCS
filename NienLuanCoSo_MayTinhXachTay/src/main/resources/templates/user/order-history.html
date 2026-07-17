@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: main-layout(
+          'TechHub — Lịch sử đơn hàng',
+          ~{::#main-content}
+      )}">
+
+<body>
+<div id="main-content" class="container py-4">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <div>
+            <p class="text-secondary mb-1">TechHub</p>
+            <h2 class="fw-semibold mb-0">
+                Lịch sử đơn hàng
+            </h2>
+        </div>
+
+        <a th:href="@{/index}"
+           class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left"></i>
+            Tiếp tục mua hàng
+        </a>
+    </div>
+
+    <div th:if="${success}"
+         class="alert alert-success"
+         th:text="${success}">
+    </div>
+
+    <div th:if="${error}"
+         class="alert alert-danger"
+         th:text="${error}">
+    </div>
+
+    <!-- Chưa có đơn hàng -->
+    <div th:if="${#lists.isEmpty(orders)}"
+         class="text-center border rounded-4 py-5">
+
+        <div style="font-size:60px">📦</div>
+
+        <h4 class="mt-3">Bạn chưa có đơn hàng</h4>
+
+        <p class="text-secondary">
+            Các đơn hàng đã đặt sẽ xuất hiện tại đây.
+        </p>
+
+        <a th:href="@{/index}"
+           class="btn btn-dark">
+            Mua sắm ngay
+        </a>
+    </div>
+
+    <!-- Danh sách đơn hàng -->
+    <div th:each="order : ${orders}"
+         class="card border rounded-4 mb-4 overflow-hidden">
+
+        <div class="card-header bg-light p-3">
+            <div class="d-flex flex-wrap
+                        justify-content-between
+                        align-items-center gap-3">
+
+                <div>
+                    <span class="fw-semibold">
+                        Đơn hàng
+                    </span>
+
+                    <span class="fw-bold"
+                          th:text="${'#' + order.orderId}">
+                    </span>
+
+                    <small class="text-secondary ms-2"
+                           th:text="${order.orderDate != null
+                              ? order.orderDate.format(dateFormatter)
+                              : ''}">
+                    </small>
+                </div>
+
+                <!-- Trạng thái -->
+                <div th:switch="${order.status}">
+
+                    <span th:case="'PENDING'"
+                          class="badge bg-warning text-dark">
+                        Chờ xác nhận
+                    </span>
+
+                    <span th:case="'CONFIRMED'"
+                          class="badge bg-primary">
+                        Đã xác nhận
+                    </span>
+
+                    <span th:case="'SHIPPING'"
+                          class="badge bg-info text-dark">
+                        Đang giao hàng
+                    </span>
+
+                    <span th:case="'DELIVERED'"
+                          class="badge bg-success">
+                        Đã giao hàng
+                    </span>
+
+                    <span th:case="'CANCELLED'"
+                          class="badge bg-danger">
+                        Đã hủy
+                    </span>
+
+                    <span th:case="*"
+                          class="badge bg-secondary"
+                          th:text="${order.status}">
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-3">
+
+            <!-- Sản phẩm trong đơn -->
+            <div th:each="detail : ${order.orderDetails}"
+                 class="d-flex align-items-center gap-3
+                        border-bottom py-3">
+
+                <img th:if="${detail.product != null}"
+                     th:src="@{'/images/'
+                        + ${detail.product.image}}"
+                     th:alt="${detail.product.productName}"
+                     style="width:90px;height:70px;
+                            object-fit:contain">
+
+                <div class="flex-grow-1">
+
+                    <div class="fw-semibold"
+                         th:text="${detail.product != null
+                            ? detail.product.productName
+                            : 'Sản phẩm không còn tồn tại'}">
+                    </div>
+
+                    <small class="text-secondary">
+                        Số lượng:
+                        <span th:text="${detail.quantity}">
+                        </span>
+                    </small>
+                </div>
+
+                <div class="text-end">
+
+                    <div th:text="${#numbers.formatDecimal(
+                            detail.price,
+                            0, 'POINT', 0, 'COMMA'
+                         ) + ' đ'}">
+                    </div>
+
+                    <small class="text-secondary"
+                           th:text="${#numbers.formatDecimal(
+                              detail.price * detail.quantity,
+                              0, 'POINT', 0, 'COMMA'
+                           ) + ' đ'}">
+                    </small>
+                </div>
+            </div>
+
+            <div class="row mt-3 align-items-end">
+
+                <div class="col-md-7">
+                    <small class="text-secondary">
+                        Giao đến
+                    </small>
+
+                    <div class="fw-medium"
+                         th:text="${order.user.fullName}">
+                    </div>
+
+                    <div class="text-secondary"
+                         th:text="${order.user.phone}">
+                    </div>
+
+                    <div class="text-secondary"
+                         th:text="${order.user.address}">
+                    </div>
+                </div>
+
+                <div class="col-md-5 text-md-end mt-3 mt-md-0">
+
+                    <div class="mb-3">
+                        Tổng thanh toán:
+
+                        <span class="fw-bold fs-5 text-danger"
+                              th:text="${#numbers.formatDecimal(
+                                order.totalAmount,
+                                0, 'POINT', 0, 'COMMA'
+                              ) + ' đ'}">
+                        </span>
+                    </div>
+
+                    <!-- Chỉ được hủy đơn chờ xác nhận -->
+                    <form th:if="${order.status == 'PENDING'}"
+                          th:action="@{/orders/{id}/cancel
+                              (id=${order.orderId})}"
+                          method="post">
+
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+
+                        <button type="submit"
+                                class="btn btn-outline-danger"
+                                onclick="return confirm(
+                                  'Bạn chắc chắn muốn hủy đơn hàng này?'
+                                )">
+                            <i class="bi bi-x-circle"></i>
+                            Hủy đơn hàng
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

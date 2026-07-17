@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
-
+import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -20,4 +21,19 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // 2. Lấy danh sách đơn hàng mới nhất (Sắp xếp theo ngày giảm dần)
     @Query("SELECT o FROM Order o ORDER BY o.orderDate DESC")
     List<Order> findTop5RecentOrders(Pageable pageable);
+    
+    @EntityGraph(attributePaths = {
+            "orderDetails",
+            "orderDetails.product"
+    })
+    List<Order> findByUserUsernameOrderByOrderDateDesc(
+            String username);
+
+    @EntityGraph(attributePaths = {
+            "orderDetails",
+            "orderDetails.product"
+    })
+    Optional<Order> findByOrderIdAndUserUsername(
+            Long orderId,
+            String username);
 }

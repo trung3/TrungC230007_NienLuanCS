@@ -1,140 +1,175 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      th:replace="~{layout :: main-layout('TechHub — Cửa hàng Laptop', ~{::#main-content})}">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: main-layout(
+          'TechHub — Cửa hàng Laptop',
+          ~{::#main-content}
+      )}">
+
 <body>
-    <div id="main-content" class="container py-4">
 
-        <div class="hero-section mb-4">
-            <div class="row align-items-center">
-                <div class="col">
-                    <p class="hero-eyebrow mb-2">Chính hãng — Bảo hành 24 tháng</p>
-                    <h1 class="fw-semibold mb-2" style="font-size:28px;line-height:1.2">Laptop cho mọi<br>nhu cầu của bạn</h1>
-                    <p class="text-secondary mb-3" style="font-size:14px">Gaming · Đồ họa · Văn phòng · Học tập<br>Trả góp 0% — Giao hàng toàn quốc</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <span class="badge rounded-pill border text-secondary fw-normal px-3 py-2">🚚 Miễn phí giao hàng</span>
-                        <span class="badge rounded-pill border text-secondary fw-normal px-3 py-2">🔄 Đổi trả 7 ngày</span>
-                        <span class="badge rounded-pill border text-secondary fw-normal px-3 py-2">💳 Trả góp 0%</span>
+<div id="main-content" class="container py-4">
+
+    <!-- Banner -->
+    <a href="#grid"
+       class="d-block text-decoration-none mb-4">
+
+        <img th:src="@{/images/Banner-gaming_laptops (1).jpg}"
+             class="w-100 object-fit-cover rounded-4 shadow-sm"
+             style="height:clamp(280px, 26vw, 440px);
+                    object-position:center"
+             alt="Banner gaming laptop">
+    </a>
+
+    <!-- Bộ lọc -->
+    <div class="bg-white border rounded-4 shadow-sm
+                p-3 mb-4">
+
+        <div class="row g-3 align-items-center">
+
+            <!-- Nút danh mục -->
+            <div class="col-lg">
+                <div id="filters"
+                     class="d-flex flex-wrap gap-2">
+                </div>
+            </div>
+
+            <!-- Tìm kiếm và sắp xếp -->
+            <div class="col-lg-auto">
+
+                <div class="d-flex flex-column flex-sm-row
+                            align-items-sm-center gap-2">
+
+                    <div class="input-group"
+                         style="min-width:240px">
+
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <input class="form-control"
+                               type="search"
+                               placeholder="Tìm laptop..."
+                               id="search">
+                    </div>
+
+                    <span id="result-count"
+                          class="badge rounded-pill
+                                 bg-light text-secondary
+                                 border fw-normal px-3 py-2">
+                    </span>
+
+                    <select class="form-select"
+                            id="sort"
+                            style="min-width:155px"
+                            onchange="renderGrid()">
+
+                        <option value="default">
+                            Mặc định
+                        </option>
+
+                        <option value="price-asc">
+                            Giá tăng dần
+                        </option>
+
+                        <option value="price-desc">
+                            Giá giảm dần
+                        </option>
+
+                        <option value="name">
+                            Tên A–Z
+                        </option>
+                    </select>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="row g-3 g-xl-4"
+         id="grid">
+
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3"
+             th:each="p : ${products}">
+
+            <div class="card h-100 border rounded-4
+                        overflow-hidden shadow-sm product-card">
+
+                <!-- Hình sản phẩm -->
+                <a th:href="@{/product/{id}
+                        (id=${p.productId})}"
+                   class="d-flex align-items-center
+                          justify-content-center
+                          bg-light p-3"
+                   style="height:230px">
+
+                    <img th:src="@{'/images/' + ${p.image}}"
+                         class="img-fluid h-100 object-fit-contain"
+                         th:alt="${p.productName}">
+                </a>
+
+                <div class="card-body p-3
+                            d-flex flex-column">
+
+                    <!-- Thương hiệu -->
+                    <p class="text-uppercase text-secondary
+                              small fw-semibold mb-2"
+                       th:text="${p.brand != null
+                          ? p.brand.brandName
+                          : 'Không thương hiệu'}">
+                    </p>
+
+                    <!-- Tên sản phẩm -->
+                    <h6 class="mb-3"
+                        style="min-height:48px">
+
+                        <a th:href="@{/product/{id}
+                                (id=${p.productId})}"
+                           class="text-decoration-none
+                                  text-dark"
+                           th:text="${p.productName}">
+                        </a>
+                    </h6>
+
+                    <!-- Giá và nút thêm -->
+                    <div class="d-flex align-items-center
+                                justify-content-between
+                                gap-2 mt-auto">
+
+                        <span class="fw-bold text-danger"
+                              style="font-size:17px"
+                              th:text="${#numbers.formatDecimal(
+                                p.price,
+                                0, 'POINT', 0, 'COMMA'
+                              ) + ' đ'}">
+                        </span>
+
+                        <form th:action="@{/cart/add/{id}
+                                (id=${p.productId})}"
+                              method="post"
+                              class="m-0">
+
+                            <input type="hidden"
+                                   th:if="${_csrf != null}"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <button type="submit"
+                                    class="btn btn-dark btn-sm
+                                           text-nowrap px-3">
+
+                                <i class="bi bi-plus-lg"></i>
+                                Thêm
+                            </button>
+                        </form>
+
                     </div>
                 </div>
-                <div class="col-auto d-none d-md-block">
-                    <div class="hero-icon">💻</div>
-                </div>
             </div>
         </div>
+    </div>
 
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-            <div class="d-flex flex-wrap gap-2" id="filters"></div>
-            <div class="d-flex align-items-center gap-3">
-                <div class="search-wrap">
-                    <i class="bi bi-search search-icon"></i>
-                    <input class="form-control search-input" type="text" placeholder="Tìm laptop..." id="search">
-                </div>
-                <span class="text-muted" style="font-size:13px;white-space:nowrap" id="result-count"></span>
-                <select class="form-select form-select-sm" style="font-size:12px;width:auto;border-radius:8px" id="sort" onchange="renderGrid()">
-                    <option value="default">Mặc định</option>
-                    <option value="price-asc">Giá tăng dần</option>
-                    <option value="price-desc">Giá giảm dần</option>
-                    <option value="name">Tên A–Z</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row g-3" id="grid">
-            <div class="col-md-3" th:each="p : ${products}">
-                <div class="card h-100 product-card">
-                    <div class="card-img-wrap">
-                        <div class="card-img-wrap">
-    <a th:href="@{/product/{id}(id=${p.productId})}">
-        <img th:src="@{'/images/' + ${p.image}}"
-             class="card-img-top"
-             th:alt="${p.productName}">
-    </a>
 </div>
-                    </div>
-                    <div class="card-body p-3">
-                        <p class="brand-label mb-1" th:text="${p.brand != null ? p.brand.brandName : 'Không thương hiệu'}"></p>
-                        <p class="card-title mb-2">
-    <a th:href="@{/product/{id}(id=${p.productId})}"
-       class="text-decoration-none text-dark"
-       th:text="${p.productName}">
-    </a>
-</p>
-                        <div class="d-flex align-items-center justify-content-between mt-auto">
-                            <div>
-                                <span class="price-main" th:text="${#numbers.formatDecimal(p.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></span>
-                            </div>
-                            <form th:action="@{/cart/add/{id}(id=${p.productId})}"
-      method="post"
-      class="m-0">
 
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}">
-
-    <button type="submit"
-            class="btn btn-outline-dark add-btn">
-        <i class="bi bi-plus"></i> Thêm
-    </button>
-</form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div> <script th:inline="javascript">
-    async function addCart(productId, button) {
-        const oldContent = button.innerHTML;
-
-        try {
-            button.disabled = true;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-
-            const headers = {};
-
-            // Dùng khi dự án có Spring Security
-            const csrfToken =
-                document.querySelector('meta[name="_csrf"]')?.content;
-            const csrfHeader =
-                document.querySelector('meta[name="_csrf_header"]')?.content;
-
-            if (csrfToken && csrfHeader) {
-                headers[csrfHeader] = csrfToken;
-            }
-
-            const response = await fetch('/cart/add/' + productId, {
-                method: 'POST',
-                headers: headers
-            });
-
-            if (!response.ok) {
-                throw new Error('Không thể thêm sản phẩm');
-            }
-
-            const data = await response.json();
-
-            const cartCount = document.getElementById('cart-count');
-
-            if (cartCount) {
-                cartCount.textContent = data.cartCount;
-            }
-
-            button.innerHTML = '<i class="bi bi-check-lg"></i> Đã thêm';
-            button.classList.remove('btn-outline-dark');
-            button.classList.add('btn-success');
-
-            setTimeout(() => {
-                button.innerHTML = oldContent;
-                button.classList.remove('btn-success');
-                button.classList.add('btn-outline-dark');
-                button.disabled = false;
-            }, 1000);
-
-        } catch (error) {
-            alert(error.message);
-            button.innerHTML = oldContent;
-            button.disabled = false;
-        }
-    }
-</script></body>
+</body>
 </html>
